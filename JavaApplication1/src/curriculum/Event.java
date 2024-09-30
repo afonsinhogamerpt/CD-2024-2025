@@ -4,7 +4,9 @@
  */
 package curriculum;
 
+import java.util.List;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 /**
  *
@@ -83,9 +85,11 @@ public class Event {
         this.event = event;
     }
     
-    public String Read(String path) throws FileNotFoundException, IOException{
+   
+    public List<String> Read(String path) throws FileNotFoundException, IOException{
         fileExists f = new fileExists();
         BufferedReader br = new BufferedReader(new FileReader(path));
+        ArrayList<String> ar1 = new ArrayList<>();
 
         if (f.fileExists(path)){
 
@@ -96,12 +100,10 @@ public class Event {
                 while (line != null) {
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                   
+                    ar1.add(sb.toString());
                     line = br.readLine();
                 }
-                String everything = sb.toString();
-                System.out.println(everything);
-                return everything;
+                return ar1;
                 
             } finally {
                 br.close();
@@ -120,28 +122,24 @@ public class Event {
     
     public void Write(String path, String string) throws IOException{
         
-        String teste = Read(path);
-        
+        ArrayList<String> teste = (ArrayList<String>) Read(path);
         fileExists f = new fileExists();
         BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+        StringBuilder sb = new StringBuilder();   
         if (f.fileExists(path)){
             try{
-                StringBuilder sb = new StringBuilder();
-                sb.append(teste);
+                for(String item: teste){
+                    sb.append(item);
+                }
+                
                 sb.append(string);
-                bw.write(sb.toString());
+                bw.write(sb.toString()+"\n");
             }finally{
                 bw.close();
             }
         }
     }
     
-    /*public String[] getInfo(String path) throws IOException{
-        fileExists f = new fileExists();
-        if (f.fileExists(path)){
-            Read(path);
-        }
-    }*/
     
     
 }

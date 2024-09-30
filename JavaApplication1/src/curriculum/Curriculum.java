@@ -4,6 +4,8 @@
 
 package curriculum;
 
+import blockchain.Block;
+
 /**
  *
  * @author afonsorgcosta
@@ -11,6 +13,8 @@ package curriculum;
 public class Curriculum {
 
     public static void main(String[] args) {
+        Block bl1 = new Block();
         
+        System.out.println(bl1.toString());
     }
 }
