@@ -7,13 +7,18 @@ package curriculum;
 import blockchain.utils.Block;
 import blockchain.utils.MerkleTree;
 
+
 /**
  *
  * @author afonsorgcosta
  */
 public class Curriculum {
 
-    public static void main(String[] args) {
-        MerkleTree mt = new MerkleTree();
-        }
+    public static void main(String[] args) throws Exception {
+        Person p1 = new Person("Antonio");
+        p1.generateKeys();
+        p1.save("oi");
+        System.out.println("" + p1.toString());
+        
+    }
 }

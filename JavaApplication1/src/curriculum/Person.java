@@ -8,6 +8,8 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -51,14 +53,19 @@ public class Person {
     
     public void save(String password) throws Exception{
         //encriptar a chave privada
-        byte[] secret = SecurityUtils.encrypt(privKey.getEncoded(), password);
+        byte[] secret = SecurityUtils.encrypt(this.privKey.getEncoded(), password);
         //encriptar a chave simetrica
-        byte[] sim = SecurityUtils.encrypt(simKey.getEncoded(), password);
+        byte[] sim = SecurityUtils.encrypt(this.simKey.getEncoded(), password);
         //guardar as keys
         Files.write(Path.of(this.nome + ".sim"), sim);
         Files.write(Path.of(this.nome + ".priv"), secret);
-        Files.write(Path.of(this.nome + ".pub"), pubKey.getEncoded());
+        Files.write(Path.of(this.nome + ".pub"), this.pubKey.getEncoded());
     }
+    
+    public void loadPub(String password) throws Exception{
+        byte []pubData = Files.readAllBytes(Path.of(this.nome + ".pub"));
+        this.pubKey = SecurityUtils.getPublicKey(pubData);
+    }    
     
     public void load(String password) throws Exception{
         //desencriptar as chaves priv, sim
@@ -73,6 +80,14 @@ public class Person {
         this.pubKey = SecurityUtils.getPublicKey(pubData);
         this.privKey = SecurityUtils.getPrivateKey(privData);
     }
+
+   /* @Override
+    public String toString() {
+        return "Person{" + "privKey=" + privKey + ", nome=" + nome + ", pubKey=" + pubKey + ", simKey=" + simKey + '}';
+    }*/
+    
+    
+    
     
      
 }
