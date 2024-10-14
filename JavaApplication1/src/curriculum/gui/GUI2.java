@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package curriculum;
+package curriculum.gui;
 
+import curriculum.core.Event;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -58,7 +59,6 @@ public class GUI2 extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(2127483647, 2147483647));
 
         read.setText("Ver currículos");
         read.addActionListener(new java.awt.event.ActionListener() {
