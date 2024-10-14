@@ -23,7 +23,6 @@ public class Person {
     
     private int personId;
     private String nome;
-    private int age;
     private String publicKey;
     
     //public key
@@ -35,7 +34,6 @@ public class Person {
      * @param nome 
      */
     public Person(int personId, int age, String nome){
-        this.age = age;
         this.personId = personId;
         this.nome = nome;
     }
@@ -74,20 +72,6 @@ public class Person {
      */
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    /**
-     * @return the age
-     */
-    public int getAge() {
-        return age;
-    }
-
-    /**
-     * @param age the age to set
-     */
-    public void setAge(int age) {
-        this.age = age;
     }
 
     /**
