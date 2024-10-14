@@ -4,7 +4,8 @@
 
 package curriculum;
 
-import blockchain.Block;
+import blockchain.utils.Block;
+import blockchain.utils.MerkleTree;
 
 /**
  *
@@ -13,8 +14,6 @@ import blockchain.Block;
 public class Curriculum {
 
     public static void main(String[] args) {
-        Block bl1 = new Block();
-        
-        System.out.println(bl1.toString());
-    }
+        MerkleTree mt = new MerkleTree();
+        }
 }

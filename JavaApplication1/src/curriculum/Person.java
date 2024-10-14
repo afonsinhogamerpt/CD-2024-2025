@@ -1,5 +1,14 @@
 package curriculum;
 
+import blockchain.utils.SecurityUtils;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -11,79 +20,59 @@ package curriculum;
  */
 public class Person {
     
-    private int personId;
+    private PrivateKey privKey;
     private String nome;
-    private int age;
-    private int curriculumId;
-    
+    private PublicKey pubKey;
+    private Key simKey;
     
     public Person(){
+        this.nome = "noName";
+        this.privKey = null;
+        this.pubKey = null;
+        this.simKey = null;
+    }
+    
+    public Person(String nome){
+        this.nome = nome;
+        this.privKey = null;
+        this.pubKey = null;
+        this.simKey = null;
+    }
+    
+    public void generateKeys() throws Exception{
+        KeyPair kp = SecurityUtils.generateECKeyPair(256);
+        this.simKey = SecurityUtils.generateAESKey(256);
+        this.privKey = kp.getPrivate();
+        this.pubKey = kp.getPublic();
+    }
+    
+    public void sign(){
+    }
+    
+    public void save(String password) throws Exception{
+        //encriptar a chave privada
+        byte[] secret = SecurityUtils.encrypt(privKey.getEncoded(), password);
+        //encriptar a chave simetrica
+        byte[] sim = SecurityUtils.encrypt(simKey.getEncoded(), password);
+        //guardar as keys
+        Files.write(Path.of(this.nome + ".sim"), sim);
+        Files.write(Path.of(this.nome + ".priv"), secret);
+        Files.write(Path.of(this.nome + ".pub"), pubKey.getEncoded());
+    }
+    
+    public void load(String password) throws Exception{
+        //desencriptar as chaves priv, sim
+        byte [] privData = Files.readAllBytes(Path.of(this.nome + ".priv"));
+        byte [] simData = Files.readAllBytes(Path.of(this.nome + ".priv"));
+        byte [] pubData = Files.readAllBytes(Path.of(this.nome + ".pub"));
         
+        privData = SecurityUtils.decrypt(privData, password);
+        simData = SecurityUtils.decrypt(simData, password);
+        
+        this.privKey = SecurityUtils.getPrivateKey(privData);
+        this.pubKey = SecurityUtils.getPublicKey(pubData);
+        this.privKey = SecurityUtils.getPrivateKey(privData);
     }
     
-    public Person(int personId, int age, int curriculumId, String nome){
-        this.age = age;
-        this.personId = personId;
-        this.curriculumId = curriculumId;
-        this.nome = nome;
-    }
-
-    /**
-     * @return the personId
-     */
-    public int getPersonId() {
-        return personId;
-    }
-
-    /**
-     * @param personId the personId to set
-     */
-    public void setPersonId(int personId) {
-        this.personId = personId;
-    }
-
-    /**
-     * @return the nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     * @param nome the nome to set
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    /**
-     * @return the age
-     */
-    public int getAge() {
-        return age;
-    }
-
-    /**
-     * @param age the age to set
-     */
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    /**
-     * @return the curriculumId
-     */
-    public int getCurriculumId() {
-        return curriculumId;
-    }
-
-    /**
-     * @param curriculumId the curriculumId to set
-     */
-    public void setCurriculumId(int curriculumId) {
-        this.curriculumId = curriculumId;
-    }
-    
-    
-    
+     
 }
