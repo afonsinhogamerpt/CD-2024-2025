@@ -15,7 +15,7 @@ import blockchain.utils.MerkleTree;
 public class Curriculum {
 
     public static void main(String[] args) throws Exception {
-        Person p1 = new Person("Antonio");
+        Person p1 = new Person("oi");
         p1.generateKeys();
         p1.save("oi");
         System.out.println("" + p1.toString());

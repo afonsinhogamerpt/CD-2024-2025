@@ -4,65 +4,62 @@
  */
 package curriculum.core;
 
+import blockchain.utils.Block;
+import blockchain.utils.BlockChain;
+import blockchain.utils.ObjectUtils;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- *
+ *Temos de ter um arraylist de eventos que será o nosso ledger
+ * A nossa blockchain
+ * A nossa dificuldade
  * @author afonsorgcosta
  */
 public class CurriculumVitae {
     private static final AtomicInteger count = new AtomicInteger(0);
-    private int curriculumId;
-    private int eventId;
-    private int personId;
-    private Event[] evento;
+    private ArrayList<Event> ledger;
+    blockchain.utils.BlockChain bc ;
+    public static int DIFICULTY = 4;
     
+    /**
+     * We have to initialize our ledger and blockchain...?
+     */
     public CurriculumVitae() {
-        
-    }
-    
-    public CurriculumVitae(int curriculumId, int eventId, int personId, Event[] evento){
-        this.curriculumId = curriculumId;
-        this.eventId = eventId;
-        this.personId = personId;
-        this.evento = evento;
+         ledger = new ArrayList<>();
+         bc = new BlockChain();
     }
 
-    public int getCurriculumId() {
-        return curriculumId;
+    public ArrayList<Event> getLedger() {
+        return ledger;
     }
 
-    public void setCurriculumId(int curriculumId) {
-        this.curriculumId = curriculumId;
+    public void setLedger(ArrayList<Event> ledger) {
+        this.ledger = ledger;
     }
 
-    public int getEventId() {
-        return eventId;
+    public BlockChain getBc() {
+        return bc;
     }
 
-    public void setEventId(int eventId) {
-        this.eventId = eventId;
+    public void setBc(BlockChain bc) {
+        this.bc = bc;
     }
 
-    public int getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
-    }
-
-    public Event[] getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Event[] evento) {
-        this.evento = evento;
-    }
-    
-    public Event groupEvents(){
-        Event ev1 = new Event();
-        return ev1;
+    @Override
+    public String toString() {
+        StringBuilder txt = new StringBuilder();
+         for( Block b : bc.getChain()){
+              Event t = (Event) ObjectUtils.convertBase64ToObject(b.getData());
+               txt.append(b.getPreviousHash() + " " +
+                    t.toString() + " "
+                    + b.getNonce() +" "
+                    + b.getCurrentHash()
+                    +"\n"
+                            );
+         }
+         
+        return "CurriculumVitae{" + "ledger=" + ledger + ", bc=" + bc + '}';
     }
     
     

@@ -4,73 +4,53 @@
  */
 package curriculum.core;
 
+import blockchain.utils.SecurityUtils;
 import java.util.List;
 import java.io.*;
+import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.concurrent.atomic.AtomicInteger;
 /**
- *
+ * Caso seja aquele utilizador a assinar então pertence ao curriculo dele.
  * @author Antonio
  */
 public class Event {
     private static final AtomicInteger count = new AtomicInteger(0); 
-    private int eventId;
     private String event;
-    private int media;
-    private int curriculumId;
+    private String personName;
+    private String personPub;
+    private String signature;
     
     
     public Event(){
     }
     
-    public Event(String event, int curriculumId, int eventId, int media){
-        this.curriculumId = curriculumId;
-        this.media = media;
+    public Event(String event){
         this.event = event;
-        this.eventId = eventId;
     }
-
-    public int getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(int eventId) {
-        this.eventId = eventId;
-    }
-
-    public int getMedia() {
-        return media;
-    }
-
-    /**
-    This function is going to read from file txt and output for the JScroolPanel.
-     * Steps:
-     *  1. Identify if file is created otherwise create one!
-     *  2. Scan the file and inject to the panel! 
-     * @param scrollpanel
-     * @return 
-     */
     
+    public Event(Person u, String event) throws Exception{
+        this.personName = u.getNome();
+        this.personPub = Base64.getEncoder().encodeToString(u.getPubKey().getEncoded());
+        this.event = event;
+        sign(u.getPrivKey());
+    }
+   
     
+    /***
+     * Sign data to insert in blockchain.
+     * @param priv
+     * @throws Exception 
+     */
+    public void sign(PrivateKey priv) throws Exception {
+        byte[] dataSign = SecurityUtils.sign(
+                (personPub + event).getBytes(),
+                priv);
+        this.signature = Base64.getEncoder().encodeToString(dataSign);
+    }
+
     
-    public void setMedia(int media) {    
-        this.media = media;
-    }
-
-    /**
-     * @return the curriculumId
-     */
-    public int getCurriculumId() {
-        return curriculumId;
-    }
-
-    /**
-     * @param curriculumId the curriculumId to set
-     */
-    public void setCurriculumId(int curriculumId) {
-        this.curriculumId = curriculumId;
-    }
-
     /**
      * @return the event
      */
@@ -84,6 +64,13 @@ public class Event {
     public void setEvent(String event) {
         this.event = event;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" + "event=" + event + ", signature=" + signature + '}';
+    }
+    
+    
     
    
     public List<String> Read(String path) throws FileNotFoundException, IOException{
