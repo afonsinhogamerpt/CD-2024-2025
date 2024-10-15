@@ -4,7 +4,9 @@
 
 package curriculum.core;
 
-import blockchain.Block;
+import blockchain.utils.Block;
+import blockchain.utils.MerkleTree;
+
 
 /**
  *
@@ -12,9 +14,11 @@ import blockchain.Block;
  */
 public class Curriculum {
 
-    public static void main(String[] args) {
-        Block bl1 = new Block();
+    public static void main(String[] args) throws Exception {
+        Person p1 = new Person("Antonio");
+        p1.generateKeys();
+        p1.save("oi");
+        System.out.println("" + p1.toString());
         
-        System.out.println(bl1.toString());
     }
 }
