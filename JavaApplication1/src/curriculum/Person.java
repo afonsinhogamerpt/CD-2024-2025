@@ -80,6 +80,14 @@ public class Person {
         this.pubKey = SecurityUtils.getPublicKey(pubData);
         this.privKey = SecurityUtils.getPrivateKey(privData);
     }
+    
+    public void setPub(PublicKey pub){
+        this.pubKey = pub;
+    }
+    
+    public PublicKey getPub(){
+        return pubKey;
+    }
 
    /* @Override
     public String toString() {

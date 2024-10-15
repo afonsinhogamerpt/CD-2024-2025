@@ -250,8 +250,9 @@ public class GUI2 extends javax.swing.JFrame {
         Event ev1 = new Event();
         String string = name.getText() + " | " + events.getText() + " | " + contacts.getText();
         try {
-            ev1.Write("/Users/afonsorgcosta/Desktop/oi.txt", string);
-        } catch (IOException ex) {
+            //ev1.Write();
+            System.out.println("");
+        } catch (Exception ex) {
             Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -260,11 +261,11 @@ public class GUI2 extends javax.swing.JFrame {
         // TODO add your handling code here:
         Event ev1 = new Event();
         try {
-            ArrayList<String> ar1 = (ArrayList<String>) ev1.Read("/Users/afonsorgcosta/Desktop/oi.txt");
+            /*ArrayList<String> ar1 = (ArrayList<String>) ev1.Read("/Users/afonsorgcosta/Desktop/oi.txt");
             for (String item: ar1){
                 curriculum.setText(item);
-            }
-        } catch (IOException ex) {
+            }*/
+        } catch (Exception ex) {
             Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
         }
       

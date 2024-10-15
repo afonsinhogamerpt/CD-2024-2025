@@ -4,6 +4,7 @@
  */
 package curriculum;
 
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -194,12 +195,16 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Insert your username and password correctly","Error",JOptionPane.INFORMATION_MESSAGE); 
         }
        
-        String password = "" + passwordLogin.getPassword();
   
-        try {
+        try { 
+            Person person = new Person(usernameLogin.getText());
+            person.load(new String(passwordLogin.getPassword()));
+            //String pub =Base64.getEncoder().encodeToString(person.getPub().getEncoded());
+            new GUI2().setVisible(true);
             
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
         
         
@@ -215,9 +220,12 @@ public class Login extends javax.swing.JFrame {
             Person person = new Person(usernameRegister.getText());
             person.generateKeys();
             person.save(new String(passwordRegister.getPassword()));
+            JOptionPane.showMessageDialog(this, "User created");
+            
             
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
         
     }//GEN-LAST:event_btnRegisterActionPerformed
