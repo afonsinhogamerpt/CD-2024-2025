@@ -8,7 +8,6 @@ import blockchain.utils.Block;
 import blockchain.utils.BlockChain;
 import blockchain.utils.ObjectUtils;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *Temos de ter um arraylist de eventos que será o nosso ledger
@@ -17,8 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author afonsorgcosta
  */
 public class CurriculumVitae {
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private ArrayList<Event> ledger;
+    
+    private ArrayList<Event> ledger; 
     blockchain.utils.BlockChain bc ;
     public static int DIFICULTY = 4;
     

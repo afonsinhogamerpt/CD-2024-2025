@@ -28,6 +28,8 @@ import java.io.Serializable;
 public class Block implements Serializable {
 
     String previousHash; // link to previous block
+    //em vez de um bloco ter String tem uma merkle tree onde cada
+    //element é uma string de eventos
     String data;         // data in the block
     int nonce;           // proof of work 
     String currentHash;  // Hash of block

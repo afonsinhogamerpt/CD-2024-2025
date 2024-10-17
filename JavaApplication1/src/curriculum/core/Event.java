@@ -10,13 +10,11 @@ import java.io.*;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Caso seja aquele utilizador a assinar então pertence ao curriculo dele.
  * @author Antonio
  */
 public class Event {
-    private static final AtomicInteger count = new AtomicInteger(0); 
     private String event;
     private String personName;
     private String personPub;
