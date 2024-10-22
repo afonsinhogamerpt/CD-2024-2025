@@ -201,6 +201,7 @@ public class Login extends javax.swing.JFrame {
             person.load(new String(passwordLogin.getPassword()));
             //String pub =Base64.getEncoder().encodeToString(person.getPub().getEncoded());
             new GUI2().setVisible(true);
+            dispose();
             
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
