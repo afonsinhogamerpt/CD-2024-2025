@@ -4,37 +4,51 @@
  */
 package curriculum;
 
+import blockchain.utils.SecurityUtils;
 import java.util.List;
 import java.io.*;
+import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Base64;
 /**
  *
  * @author afonsorgcosta
  */
 public class Event {
-    blockchain.utils.BlockChain bc ;
-    public static int DIFICULTY = 4;
     private String event;
-    private int media;
-    
-    
+    private String signature;
+    private String pubKey;
+    private String fromPub;
+    private String toPub;
     
     public Event(){
     }
     
-    public Event(String event, int media){
-        this.media = media;
+    public Event(String event){
         this.event = event;
     }
 
-    public int getMedia() {
-        return media;
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getPubKey() {
+        return pubKey;
+    }
+
+    public void setPubKey(String pubKey) {
+        this.pubKey = pubKey;
     }
     
-    
-    public void setMedia(int media) {    
-        this.media = media;
-    }
+    public void sign(PrivateKey priv) throws Exception {
+        byte[] dataSign = SecurityUtils.sign((fromPub + event).getBytes(),
+                priv);
+        this.signature = Base64.getEncoder().encodeToString(dataSign);
+   }
 
     /**
      * @return the event
@@ -50,32 +64,6 @@ public class Event {
         this.event = event;
     }
     
-    /*
-    public List<String> Read(String path) throws FileNotFoundException, IOException{
-        fileExists f = new fileExists();
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        ArrayList<String> ar1 = new ArrayList<>();
-
-        if (f.fileExists(path)){
-
-            try {
-                StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-                
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    ar1.add(sb.toString());
-                    line = br.readLine();
-                }
-                return ar1;
-                
-            } finally {
-                br.close();
-            }
-        }
-        return null;
-    }*/
    
     public Event Read(String path) throws Exception, ClassNotFoundException{
         try ( ObjectInputStream in = new ObjectInputStream(
@@ -83,26 +71,6 @@ public class Event {
             return (Event) in.readObject();
         }
     }
-    
-    /*public void Write(String path, String string) throws IOException{
-        
-        ArrayList<String> teste = (ArrayList<String>) Read(path);
-        fileExists f = new fileExists();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
-        StringBuilder sb = new StringBuilder();   
-        if (f.fileExists(path)){
-            try{
-                for(String item: teste){
-                    sb.append(item);
-                }
-                
-                sb.append(string);
-                bw.write(sb.toString()+"\n");
-            }finally{
-                bw.close();
-            }
-        }
-    }*/
              
 
     public static class fileExists{

@@ -4,12 +4,20 @@
  */
 package curriculum;
 
+import blockchain.utils.Block;
+import blockchain.utils.BlockChain;
+import blockchain.utils.MerkleTree;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 
@@ -18,6 +26,7 @@ import javax.swing.JTabbedPane;
  * @author afonsorgcosta
  */
 public class GUI2 extends javax.swing.JFrame {
+    BlockChain bc = new BlockChain();
 
     /**
      * Creates new form GUI2
@@ -48,7 +57,7 @@ public class GUI2 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         contacts = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         events = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -56,6 +65,8 @@ public class GUI2 extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(2127483647, 2147483647));
@@ -115,10 +126,10 @@ public class GUI2 extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Adicionar currículo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setText("Adicionar currículo");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
@@ -149,7 +160,7 @@ public class GUI2 extends javax.swing.JFrame {
                                     .addComponent(jLabel3))))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(121, 121, 121)
-                            .addComponent(jButton1))))
+                            .addComponent(btnAdd))))
                 .addGap(21, 21, 21))
         );
         jPanel2Layout.setVerticalGroup(
@@ -168,7 +179,7 @@ public class GUI2 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(contacts, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnAdd)
                 .addGap(27, 27, 27))
         );
 
@@ -217,17 +228,28 @@ public class GUI2 extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Acerca", jPanel3);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("./blockchain.obj\n./blockchain.obj");
+        jScrollPane2.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(422, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(182, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane2)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -245,28 +267,44 @@ public class GUI2 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_contactsActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        Event ev1 = new Event();
+        int difficulty = 4;
         String string = name.getText() + " | " + events.getText() + " | " + contacts.getText();
+        List arlist = new ArrayList<>();
+       
         try {
-            //ev1.Write();
-            System.out.println("");
+            arlist.add(string);
+            MerkleTree mt = new MerkleTree(arlist);
+            //merkleGraphics1.setMerkle(mt);
+            
+            
+            bc.add(mt.getRoot(), (int) difficulty);
+
+            mt.saveToFile(bc.getLastBlockHash() + ".mkt");
+
+            DefaultListModel model = new DefaultListModel();
+            for (Block elem : bc.getChain()) {
+                model.addElement(elem);
+            }
+            
+           
         } catch (Exception ex) {
             Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void readActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readActionPerformed
         // TODO add your handling code here:
-        Event ev1 = new Event();
-        try {
-            /*ArrayList<String> ar1 = (ArrayList<String>) ev1.Read("/Users/afonsorgcosta/Desktop/oi.txt");
-            for (String item: ar1){
-                curriculum.setText(item);
-            }*/
-        } catch (Exception ex) {
-            Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
+        JFileChooser fc = new JFileChooser(new File("."));
+        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                bc.save(fc.getSelectedFile().getAbsolutePath());
+                //jScrollPane2.setText(fc.getSelectedFile().getAbsolutePath());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+                Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
       
     }//GEN-LAST:event_readActionPerformed
@@ -307,10 +345,10 @@ public class GUI2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JTextField contacts;
     private javax.swing.JTextArea curriculum;
     private javax.swing.JTextField events;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -323,8 +361,10 @@ public class GUI2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField name;
     private javax.swing.JButton read;
     // End of variables declaration//GEN-END:variables
