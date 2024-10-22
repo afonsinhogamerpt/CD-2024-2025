@@ -66,7 +66,7 @@ public class GUI2 extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtFileName = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(2127483647, 2147483647));
@@ -228,10 +228,10 @@ public class GUI2 extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Acerca", jPanel3);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("./blockchain.obj\n./blockchain.obj");
-        jScrollPane2.setViewportView(jTextArea1);
+        txtFileName.setColumns(20);
+        txtFileName.setRows(5);
+        txtFileName.setText("./blockchain.obj\n./blockchain.obj");
+        jScrollPane2.setViewportView(txtFileName);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -272,7 +272,8 @@ public class GUI2 extends javax.swing.JFrame {
         int difficulty = 4;
         String string = name.getText() + " | " + events.getText() + " | " + contacts.getText();
         List arlist = new ArrayList<>();
-       
+      
+        
         try {
             arlist.add(string);
             MerkleTree mt = new MerkleTree(arlist);
@@ -280,6 +281,7 @@ public class GUI2 extends javax.swing.JFrame {
             
             
             bc.add(mt.getRoot(), (int) difficulty);
+            bc.save("blockchain.obj");
 
             mt.saveToFile(bc.getLastBlockHash() + ".mkt");
 
@@ -287,7 +289,6 @@ public class GUI2 extends javax.swing.JFrame {
             for (Block elem : bc.getChain()) {
                 model.addElement(elem);
             }
-            
            
         } catch (Exception ex) {
             Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
@@ -364,8 +365,8 @@ public class GUI2 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField name;
     private javax.swing.JButton read;
+    private javax.swing.JTextArea txtFileName;
     // End of variables declaration//GEN-END:variables
 }
