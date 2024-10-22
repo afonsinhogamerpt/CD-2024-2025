@@ -15,7 +15,11 @@
 //////////////////////////////////////////////////////////////////////////////
 package blockchain.utils;
 
+import curriculum.Event;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created on 22/08/2022, 09:23:49
@@ -34,6 +38,7 @@ public class Block implements Serializable {
     String data;         // data in the block
     int nonce;           // proof of work 
     String currentHash;  // Hash of block
+    blockchain.utils.MerkleTree mt;
     
     public Block(){
     }
@@ -44,7 +49,7 @@ public class Block implements Serializable {
         this.nonce = nonce;
         this.currentHash = calculateHash();
     }
-
+    
     public String getData() {
         return data;
     }

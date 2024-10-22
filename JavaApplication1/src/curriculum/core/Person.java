@@ -1,4 +1,4 @@
-package curriculum.core;
+package curriculum;
 
 import blockchain.utils.SecurityUtils;
 import java.io.IOException;
@@ -81,19 +81,14 @@ public class Person {
         this.privKey = SecurityUtils.getPrivateKey(privData);
     }
     
-    public PublicKey getPubKey() {
+    public void setPub(PublicKey pub){
+        this.pubKey = pub;
+    }
+    
+    public PublicKey getPub(){
         return pubKey;
     }
-    
-    public String getNome() {
-        return nome;
-    }
-    
-    public PrivateKey getPrivKey() {
-        return privKey;
-    }
-    
-        
+
    /* @Override
     public String toString() {
         return "Person{" + "privKey=" + privKey + ", nome=" + nome + ", pubKey=" + pubKey + ", simKey=" + simKey + '}';

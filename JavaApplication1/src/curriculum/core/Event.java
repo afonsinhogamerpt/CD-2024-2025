@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package curriculum.core;
+package curriculum;
 
 import blockchain.utils.SecurityUtils;
 import java.util.List;
@@ -11,15 +11,15 @@ import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Base64;
 /**
- * Caso seja aquele utilizador a assinar então pertence ao curriculo dele.
- * @author Antonio
+ *
+ * @author afonsorgcosta
  */
 public class Event {
     private String event;
-    private String personName;
-    private String personPub;
     private String signature;
-    
+    private String pubKey;
+    private String fromPub;
+    private String toPub;
     
     public Event(){
     }
@@ -27,28 +27,29 @@ public class Event {
     public Event(String event){
         this.event = event;
     }
-    
-    public Event(Person u, String event) throws Exception{
-        this.personName = u.getNome();
-        this.personPub = Base64.getEncoder().encodeToString(u.getPubKey().getEncoded());
-        this.event = event;
-        sign(u.getPrivKey());
-    }
-   
-    
-    /***
-     * Sign data to insert in blockchain.
-     * @param priv
-     * @throws Exception 
-     */
-    public void sign(PrivateKey priv) throws Exception {
-        byte[] dataSign = SecurityUtils.sign(
-                (personPub + event).getBytes(),
-                priv);
-        this.signature = Base64.getEncoder().encodeToString(dataSign);
+
+    public String getSignature() {
+        return signature;
     }
 
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getPubKey() {
+        return pubKey;
+    }
+
+    public void setPubKey(String pubKey) {
+        this.pubKey = pubKey;
+    }
     
+    public void sign(PrivateKey priv) throws Exception {
+        byte[] dataSign = SecurityUtils.sign((fromPub + event).getBytes(),
+                priv);
+        this.signature = Base64.getEncoder().encodeToString(dataSign);
+   }
+
     /**
      * @return the event
      */
@@ -62,39 +63,13 @@ public class Event {
     public void setEvent(String event) {
         this.event = event;
     }
-
-    @Override
-    public String toString() {
-        return "Event{" + "event=" + event + ", signature=" + signature + '}';
-    }
-    
-    
     
    
-    public List<String> Read(String path) throws FileNotFoundException, IOException{
-        fileExists f = new fileExists();
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        ArrayList<String> ar1 = new ArrayList<>();
-
-        if (f.fileExists(path)){
-
-            try {
-                StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-                
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    ar1.add(sb.toString());
-                    line = br.readLine();
-                }
-                return ar1;
-                
-            } finally {
-                br.close();
-            }
+    public Event Read(String path) throws Exception, ClassNotFoundException{
+        try ( ObjectInputStream in = new ObjectInputStream(
+                new FileInputStream(path))) {
+            return (Event) in.readObject();
         }
-        return null;
     }
              
 
@@ -105,26 +80,12 @@ public class Event {
         }
     }
     
-    public void Write(String path, String string) throws IOException{
+    public void Write(String path) throws IOException{
         
-        ArrayList<String> teste = (ArrayList<String>) Read(path);
-        fileExists f = new fileExists();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
-        StringBuilder sb = new StringBuilder();   
-        if (f.fileExists(path)){
-            try{
-                for(String item: teste){
-                    sb.append(item);
-                }
-                
-                sb.append(string);
-                bw.write(sb.toString()+"\n");
-            }finally{
-                bw.close();
-            }
+        try ( ObjectOutputStream out = new ObjectOutputStream(
+                new FileOutputStream(path))) {
+            out.writeObject(this);
         }
-    }
-    
-    
-    
+        
+    }    
 }
