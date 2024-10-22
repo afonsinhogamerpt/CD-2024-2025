@@ -5,6 +5,7 @@
 package curriculum.gui;
 
 import curriculum.core.Event;
+import curriculum.core.Person;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,6 +20,9 @@ import javax.swing.JTabbedPane;
  * @author afonsorgcosta
  */
 public class GUI2 extends javax.swing.JFrame {
+    
+    
+    Person user = null;
 
     /**
      * Creates new form GUI2
@@ -26,6 +30,12 @@ public class GUI2 extends javax.swing.JFrame {
     public GUI2() {
         initComponents();
 
+    }
+    
+    public GUI2(Person p) {
+        this();
+        this.user = p;
+        jLabel9.setText(p.getNome());
     }
 
     /**
@@ -43,6 +53,7 @@ public class GUI2 extends javax.swing.JFrame {
         read = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         curriculum = new javax.swing.JTextArea();
+        jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         name = new javax.swing.JTextField();
@@ -83,13 +94,16 @@ public class GUI2 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(read)
                 .addGap(33, 33, 33))
@@ -318,6 +332,7 @@ public class GUI2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

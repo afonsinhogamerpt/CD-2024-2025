@@ -30,6 +30,7 @@ public class Block implements Serializable {
     String previousHash; // link to previous block
     //em vez de um bloco ter String tem uma merkle tree onde cada
     //element é uma string de eventos
+    MerkleTree mt;
     String data;         // data in the block
     int nonce;           // proof of work 
     String currentHash;  // Hash of block
